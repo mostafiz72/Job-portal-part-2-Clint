@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
-import axios from 'axios';
+// import axios from 'axios';
+import UseAxiosSecure from '../../context/useAxiosSecure/UseAxiosSecure';
 
 const MyApplications = () => {
     const { user } = useAuth();
     const [jobs, setJobs] = useState([]);
+    const axiosSecure = UseAxiosSecure();
 
     useEffect(() => {
         // fetch(`http://localhost:5000/job-application?email=${user.email}`)
@@ -12,9 +14,14 @@ const MyApplications = () => {
         //     .then(data => setJobs(data))
 
 
-        axios(`http://localhost:5000/job-application?email=${user.email}`, {
-            withCredentials: true
-        })
+        // axios(`http://localhost:5000/job-application?email=${user.email}`, {
+        //     withCredentials: true
+        // })
+
+
+        axiosSecure.get(`/job-application?email=${user.email}`) // link ta useAxiosSecure er mordhe create kora hoyse ...........
+        .then(res => setJobs(res.data))
+
             .then(res => setJobs(res.data))
     }, [user.email])
 
